@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Blink Order System
 
 A store order and inventory system built with Laravel 8 (PHP 7.4) and MySQL. It manages products, customers, orders and stock through a REST API and a set of web pages.
@@ -218,3 +219,6 @@ After seeding:
 | CUP-008 | Paper Cup 8oz (100 pcs) | 8 (low) |
 | MLK-OAT | Oat Milk 1L | 3 (low) |
 | SYR-CHO | Chocolate Syrup 750ml | 0 (out of stock) |
+=======
+# Mallow-Tech-blink_order_system
+>>>>>>> 77c0507a3d15a5dc6b1026a82fe8dfc4b2a8f4ce
