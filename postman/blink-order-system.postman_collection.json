@@ -1,0 +1,501 @@
+{
+  "info": {
+    "name": "Blink Order System API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": "Run `php artisan serve` first. IDs below match the seeded data (demo customer, COF-001, TEA-001, MLK-OAT)."
+  },
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "http://127.0.0.1:8000/api"
+    },
+    {
+      "key": "customer_id",
+      "value": "5"
+    },
+    {
+      "key": "product_id",
+      "value": "7"
+    },
+    {
+      "key": "order_id",
+      "value": "6"
+    }
+  ],
+  "item": [
+    {
+      "name": "01. Create customer",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{base_url}}/customers",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "customers"
+          ]
+        },
+        "description": "201 Created. Re-running with the same email returns 422.",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"name\": \"Arun Kumar\",\n  \"email\": \"arun.kumar@example.com\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "02. Place order",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{base_url}}/orders",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "orders"
+          ]
+        },
+        "description": "201 Created. Stock is deducted and the confirmation email is queued.",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"customer_id\": 5,\n  \"items\": [\n    {\n      \"product_id\": 7,\n      \"quantity\": 2\n    },\n    {\n      \"product_id\": 8,\n      \"quantity\": 1\n    }\n  ]\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "03. Show order",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{base_url}}/orders/{{order_id}}",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "orders",
+            "{{order_id}}"
+          ]
+        },
+        "description": ""
+      }
+    },
+    {
+      "name": "04. List orders (history)",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{base_url}}/orders?customer_id=5&from=2026-10-01&to=2026-10-31&per_page=15",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "orders"
+          ],
+          "query": [
+            {
+              "key": "customer_id",
+              "value": "5"
+            },
+            {
+              "key": "from",
+              "value": "2026-10-01"
+            },
+            {
+              "key": "to",
+              "value": "2026-10-31"
+            },
+            {
+              "key": "per_page",
+              "value": "15"
+            }
+          ]
+        },
+        "description": "All filters optional."
+      }
+    },
+    {
+      "name": "05. Customer order history",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{base_url}}/customers/{{customer_id}}/orders?per_page=15",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "customers",
+            "{{customer_id}}",
+            "orders"
+          ],
+          "query": [
+            {
+              "key": "per_page",
+              "value": "15"
+            }
+          ]
+        },
+        "description": ""
+      }
+    },
+    {
+      "name": "06. List products",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{base_url}}/products?search=cof&status=in_stock&per_page=15",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "products"
+          ],
+          "query": [
+            {
+              "key": "search",
+              "value": "cof"
+            },
+            {
+              "key": "status",
+              "value": "in_stock"
+            },
+            {
+              "key": "per_page",
+              "value": "15"
+            }
+          ]
+        },
+        "description": "status: in_stock | low_stock | out_of_stock. All filters optional."
+      }
+    },
+    {
+      "name": "07. Show product",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{base_url}}/products/{{product_id}}",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "products",
+            "{{product_id}}"
+          ]
+        },
+        "description": ""
+      }
+    },
+    {
+      "name": "08. Low-stock products",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{base_url}}/products/low-stock?threshold=10",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "products",
+            "low-stock"
+          ],
+          "query": [
+            {
+              "key": "threshold",
+              "value": "10"
+            }
+          ]
+        },
+        "description": "threshold optional (default 10)."
+      }
+    },
+    {
+      "name": "09. Restock product",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{base_url}}/products/{{product_id}}/restock",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "products",
+            "{{product_id}}",
+            "restock"
+          ]
+        },
+        "description": "",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"quantity\": 50\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "10. Update product",
+      "request": {
+        "method": "PATCH",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{base_url}}/products/{{product_id}}",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "products",
+            "{{product_id}}"
+          ]
+        },
+        "description": "Stock cannot be set here; use Restock.",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"name\": \"Arabica Coffee Beans 1kg\",\n  \"price\": \"46.50\",\n  \"tax_percentage\": \"6\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "11. List customers",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{base_url}}/customers?search=demo&per_page=15",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "customers"
+          ],
+          "query": [
+            {
+              "key": "search",
+              "value": "demo"
+            },
+            {
+              "key": "per_page",
+              "value": "15"
+            }
+          ]
+        },
+        "description": ""
+      }
+    },
+    {
+      "name": "12. Show customer",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{base_url}}/customers/{{customer_id}}",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "customers",
+            "{{customer_id}}"
+          ]
+        },
+        "description": ""
+      }
+    },
+    {
+      "name": "13. Update customer",
+      "request": {
+        "method": "PATCH",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{base_url}}/customers/{{customer_id}}",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "customers",
+            "{{customer_id}}"
+          ]
+        },
+        "description": "Partial update: send only the fields to change.",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"name\": \"Demo Customer Updated\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "14. Delete customer",
+      "request": {
+        "method": "DELETE",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{base_url}}/customers/11",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "customers",
+            "11"
+          ]
+        },
+        "description": "204 if the customer has no orders, 409 if they do."
+      }
+    }
+  ]
+}
